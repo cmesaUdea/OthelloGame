@@ -183,6 +183,12 @@ public:
 
 };
 
+class Jugador {
+public:
+    char color;
+    Jugador(char c) : color(c) {}
+};
+
 
 int main() {
     //Othello game; //Metodo para llamar al juego
