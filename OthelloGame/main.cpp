@@ -1,40 +1,36 @@
 #include <iostream>
+#include <fstream>
+#include <ctime>
+//#include <vector>
+#include <limits>
 #include <windows.h>
-
 
 using namespace std;
 
 class Tablero {
-
-
 public:
-    //Para el tamaño del tablero, el cual sera una matriz de tipo char
     static const int TAMANO = 8;
     char celdas[TAMANO][TAMANO];
     bool movimientosPosibles[TAMANO][TAMANO];
 
-    Tablero(){ //Metodo constructor de un tablero en la memoria
+    Tablero() {
         for (int i = 0; i < TAMANO; i++) {
             for (int j = 0; j < TAMANO; j++) {
                 celdas[i][j] = ' ';
             }
         }
-
-        //Celdas en la que se tienen las fichas iniciales
         celdas[3][3] = celdas[4][4] = '-';
         celdas[3][4] = celdas[4][3] = '*';
     }
 
-    void mostrar() const{
-
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); //Utilizado para cambiar el color del texto en la consola
+    void mostrar() const {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 
         cout << endl;
         cout << "   1   2   3   4   5   6   7   8" << endl;
-
         for (int i = 0; i < TAMANO; i++) {
-            cout << "  +---+---+---+---+---+---+---+---+" << endl; //Parte superior del tablero
-            cout << i + 1 << " "; // Imprime el número de cada fila
+            cout << "  +---+---+---+---+---+---+---+---+" << endl;
+            cout << i + 1 << " ";
             for (int j = 0; j < TAMANO; j++) {
                 if (celdas[i][j] == '*') {
                     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12); // Rojo para '*'
@@ -53,7 +49,6 @@ public:
         }
         cout << "  +---+---+---+---+---+---+---+---+" << endl;
     }
-
 
     bool movimientoValido(int fila, int columna, char jugador) const {
         if (fila < 0 || fila >= TAMANO || columna < 0 || columna >= TAMANO || celdas[fila][columna] != ' ') {
@@ -180,8 +175,6 @@ public:
         }
         return contador;
     }
-
-
 };
 
 class Jugador {
@@ -189,7 +182,6 @@ public:
     char color;
     Jugador(char c) : color(c) {}
 };
-
 
 class Juego {
 public:
@@ -214,7 +206,8 @@ public:
             int fila, columna;
             bool movimientoValido = false;
             do {
-                cout << "Ingresa la fila y columna (ejemplo: 2 3): ";
+
+                cout << "Ingresa la fila y columna (ejemplo: 2 3), o escribe la coordenado 0,0 para pasar el turno: ";
                 cin >> fila;
                 if (cin.peek() == ' ' || cin.peek() == '\t') {
                     cin.ignore();
@@ -225,16 +218,19 @@ public:
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     continue;
                 }
-
                 if (cin.fail()) {
                     cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     cout << "Entrada no valida. Debes ingresar dos numeros separados por espacio. Intentalo de nuevo." << endl;
+                }else if ( fila == 0 && columna == 0 ) { //Condición para pasar el turno
+                    break;
                 } else if (fila < 1 || fila > Tablero::TAMANO || columna < 1 || columna > Tablero::TAMANO) {
                     cout << "Movimiento fuera de rango. Introduce numeros entre 1 y " << Tablero::TAMANO << ". Intentalo de nuevo." << endl;
                 } else if (!tablero.movimientosPosibles[fila - 1][columna - 1]) {
                     cout << "Movimiento invalido. Intentalo de nuevo." << endl;
-                } else {
+                } else if (!tablero.movimientosPosibles[fila - 1][columna - 1]) {
+                    cout << "Movimiento invalido. Intentalo de nuevo." << endl;
+                }
+                else {
                     movimientoValido = true;
                 }
             } while (!movimientoValido);
@@ -243,7 +239,7 @@ public:
 
             turno = 1 - turno;
 
-            if (tablero.tableroCompleto()) {
+            if (tablero.tableroCompleto() || fila == 0 && columna == 0) {
                 break;
             }
         }
@@ -293,10 +289,15 @@ private:
 };
 
 int main() {
-    //Othello game; //Metodo para llamar al juego
+    string nombreJugador1, nombreJugador2;
+    cout << "Nombre del Jugador 1: ";
+    cin >> nombreJugador1;
+    cout << "Nombre del Jugador 2: ";
+    cin >> nombreJugador2;
 
-
+    Juego juego(nombreJugador1, nombreJugador2);
+    juego.jugar();
+    juego.mostrarResultados();
 
     return 0;
-
 }
