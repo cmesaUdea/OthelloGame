@@ -1,0 +1,3 @@
+Fecha: 2023/11/1 Hora: 20:5
+Jugador 1: Carlos, Jugador 2: Andres
+Ganador: Carlos (*): 4, (-): 1
