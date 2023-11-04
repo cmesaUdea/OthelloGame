@@ -17,13 +17,13 @@ public:
     void mostrarResultados();
 
 private:
-    std::string nombreJugador1;
-    std::string nombreJugador2;
+    string nombreJugador1;
+    string nombreJugador2;
     Jugador jugador1;
     Jugador jugador2;
     Tablero tablero;
 
-    void guardarResultado(const std::string& ganador, int contadorNegras, int contadorBlancas);
+    void guardarResultado(const string& ganador, int contadorNegras, int contadorBlancas);
     // Otros miembros y funciones privadas de la clase Juego
 };
 

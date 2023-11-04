@@ -32,7 +32,7 @@ void Juego::jugar() {
             } else {
                 cout << "Entrada no valida. Debes ingresar dos numeros separados por espacio. Ejemplo: (2 3)." << endl;
                 cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                //cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 continue;
             }
             if (cin.fail()) {

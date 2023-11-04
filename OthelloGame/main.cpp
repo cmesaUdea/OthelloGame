@@ -33,5 +33,4 @@ int main() {
     delete[] nombreJugador2;
 
     return 0;
-    return 0;
 }
